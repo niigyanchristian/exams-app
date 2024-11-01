@@ -12,6 +12,10 @@ const PORT = 3000;
 
 app.use(express.json());
 
+app.get('/api', (req: Request, res: Response) => {
+    res.json({ message: 'Welcome to the Exam Management System' })
+});
+
 app.use('/api/auth', userRoutes);
 app.use('/api/students', studentRoutes);
 app.use('/api/exams', examRoutes);
