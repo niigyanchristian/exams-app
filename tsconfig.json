@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es2017",
+    "outDir": "lib",
+    "rootDir": "src",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "strict": true,
+    "typeRoots": ["./node_modules/@types", "./src/types"]
+  },
+  "compileOnSave": true,
+  "include": ["src"]
+}
