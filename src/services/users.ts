@@ -24,3 +24,10 @@ export const loginQuery = async ({ username }: User): Promise<User> => {
     return result.rows[0];
 
 }
+
+export const findUser = async ({ username }: User): Promise<User> => {
+    const result = await pool.query('SELECT * FROM users WHERE username = $1', [username]);
+
+    return result.rows[0];
+
+}

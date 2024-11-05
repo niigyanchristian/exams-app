@@ -24,7 +24,7 @@ export const fetchResultsQuery = async (): Promise<ResultData[]> => {
     return result.rows;
 }
 
-export const fetchResultByIDQuery = async ({ id }: { id: string }):
+export const fetchResultByIDQuery = async ({ id }: { id: number }):
     Promise<ResultData[]> => {
 
     const result = await pool.query('SELECT * FROM results WHERE result_id = $1', [id]);
@@ -35,6 +35,14 @@ export const fetchResultByIDQuery = async ({ id }: { id: string }):
         return result.rows[0];
 
     }
+}
+export const findResult = async ({ student_id, exam_id, }: { student_id: number, exam_id: number, }):
+    Promise<ResultData[]> => {
+
+    const result = await pool.query('SELECT * FROM results WHERE student_id = $1 AND exam_id = $2', [student_id, exam_id,]);
+
+    return result.rows[0];
+
 }
 
 export const updateResultQuery = async ({ marks_obtained, id }:

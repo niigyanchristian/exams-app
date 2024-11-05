@@ -26,17 +26,24 @@ export const fetchStudentsQuery = async (): Promise<StudentData[]> => {
     return result.rows;
 }
 
-export const fetchStudentByIDQuery = async ({ id }: { id: string }):
+export const fetchStudentByIDQuery = async ({ id }: { id: number }):
     Promise<StudentData[]> => {
 
     const result = await pool.query('SELECT * FROM Students WHERE student_id = $1', [id]);
 
     if (result.rows.length === 0) {
-        throw new Error('Student not found');
+        throw new Error('Student not found!');
     } else {
         return result.rows[0];
 
     }
+}
+
+export const findStudent = async ({ email }: { email: string }): Promise<StudentData> => {
+    const result = await pool.query('SELECT * FROM Students WHERE email = $1', [email]);
+
+    return result.rows[0];
+
 }
 
 export const updateStudentQuery = async ({ student_id, first_name, last_name, email, date_of_birth }:

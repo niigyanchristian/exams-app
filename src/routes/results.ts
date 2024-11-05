@@ -17,7 +17,9 @@ router.route('/').
 
 router.route('/:id').
     get(authenticateToken, getResultById).
-    put(authenticateToken, authorizeRole('admin'), validator, updateResult).
+    put(authenticateToken, authorizeRole('admin'), [
+        body('marks_obtained').isInt({ min: 0 }).withMessage('Marks obtained must be a non-negative integer'),
+    ], updateResult).
     delete(authenticateToken, authorizeRole('admin'), deleteResult);
 
 

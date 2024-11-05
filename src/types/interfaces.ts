@@ -1,3 +1,4 @@
+import { Request } from 'express';
 export interface StudentData {
     student_id?: number;
     first_name: string;
@@ -8,10 +9,14 @@ export interface StudentData {
 }
 
 export interface UserData {
-    user_id?: number;
+    userId?: number;
     role: string;
 }
 
+// interface User {
+//     userId: number;
+//     role: string
+// }
 export interface AuthRequest extends Request {
-    user?: { userId: string; role: string };
+    user?: UserData;
 }

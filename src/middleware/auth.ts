@@ -1,9 +1,12 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
+import { AuthRequest, UserData } from '../types/interfaces';
 
-export interface AuthRequest extends Request {
-    user?: { userId: string; role: string };
-}
+
+
+// export interface AuthRequest extends Request {
+//     user?: User;
+// }
 
 
 export const authenticateToken = (req: AuthRequest, res: Response, next: NextFunction) => {
@@ -20,7 +23,7 @@ export const authenticateToken = (req: AuthRequest, res: Response, next: NextFun
             res.status(403).json({ message: 'Invalid Token' });
             return;
         }
-        req.user = user as { userId: string; role: string };
+        req.user = user as UserData;
         next();
     });
 };

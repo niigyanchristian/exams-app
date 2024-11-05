@@ -1,10 +1,10 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { validationResult } from 'express-validator';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { loginQuery, registerQuery } from '../services/users';
+import { findUser, loginQuery, registerQuery } from '../services/users';
 
-export const register = async (req: Request, res: Response) => {
+export const register = async (req: Request, res: Response, next: NextFunction) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         res.status(400).json({ errors: errors.array() });
@@ -13,17 +13,20 @@ export const register = async (req: Request, res: Response) => {
 
     const { username, password, role } = req.body;
     try {
+        const user = await findUser({ username });
+        if (user) throw new Error("User already exist!");
+
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const result = await registerQuery({ username, hashedPassword, role })
 
         res.status(201).json({ message: 'User registered successfully', user: result });
     } catch (error) {
-        res.status(500).json({ error: (error as Error).message });
+        next(error);
     }
 };
 
-export const login = async (req: Request, res: Response) => {
+export const login = async (req: Request, res: Response, next: NextFunction) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         res.status(400).json({ errors: errors.array() });
@@ -51,6 +54,6 @@ export const login = async (req: Request, res: Response) => {
 
         res.status(200).json({ message: 'Login successful', token });
     } catch (error) {
-        res.status(500).json({ error: (error as Error).message });
+        next(error);
     }
 };
